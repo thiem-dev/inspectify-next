@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// express PG
+//@ts-ignore
 import express from "express";
 import cors from "cors";
 import pg from "pg";
