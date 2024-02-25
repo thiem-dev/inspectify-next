@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 
-//@ts-ignore
+// @ts-ignore
 import express from "express";
+// @ts-ignore
 import cors from "cors";
+// @ts-ignore
 import pg from "pg";
 
 const { Pool } = pg;
