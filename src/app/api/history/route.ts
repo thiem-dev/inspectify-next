@@ -24,7 +24,6 @@ app.use(cors());
 app.use(express.json());
 
 // const DATA_SOURCE_URL
-
 export async function GET(request: Request) {
   const res = await pool.query(
     `SELECT * FROM history 
