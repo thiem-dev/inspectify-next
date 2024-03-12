@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import History from "../../../../typeDefs/types";
 
 // @ts-ignore
 import express from "express";
@@ -24,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 
 // const DATA_SOURCE_URL
-export async function GET(request: Request) {
+export async function GET() {
   const res = await pool.query(
     `SELECT * FROM history 
       ORDER BY created_at DESC;`
@@ -33,7 +34,7 @@ export async function GET(request: Request) {
     return res.status(400).send(`No rows found in history table`);
   }
 
-  // const history: History[] = await res.json();
-
   return NextResponse.json(res.rows);
 }
+
+// export async function
