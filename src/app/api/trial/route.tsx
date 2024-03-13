@@ -1,31 +1,54 @@
-import { NextRequest, NextResponse } from "next/server";
+// https://blog.stackademic.com/a-guide-to-build-an-api-server-with-nextjs-14-and-mongoose-e01f0e10a68a
+
+import { NextRequest, NextResponse } from 'next/server';
+import { HistoryInsert } from '../../../../typeDefs/types';
+
+type Error = {
+  message: string;
+};
 
 // @ts-ignore
-import express from "express";
-// @ts-ignore
-import cors from "cors";
-// @ts-ignore
-import pg from "pg";
+import pg from 'pg';
 
 const { Pool } = pg;
-const app = express();
-
-// cors error fix
-app.use(cors());
-app.use(express.json());
-
 const pool = new Pool({
   connectionString: process.env.DB_STRING,
 });
 
-const GET = async () => {
-  const data = await pool.query(
-    `SELECT * FROM history
-          ORDER BY created_at DESC
-          LIMIT 20;
-          `
-  );
-  return NextResponse.json(data.rows);
+export const GET = async () => {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM history
+            ORDER BY created_at DESC
+            LIMIT 20;
+            `
+    );
+    if (data.rows.length === 0) {
+      return new Response(`Error Message: No rows found in history table`, {
+        status: 400,
+      });
+    }
+    return NextResponse.json(data.rows);
+  } catch (error: unknown) {
+    return new Response(`Error Message: ${error.message}`, { status: 400 });
+  }
 };
 
-export { GET };
+export const POST = async (req: NextRequest) => {
+  const body: HistoryInsert = await req.json();
+  const { image_url, caption, class_categories } = body;
+  try {
+    const data = await pool.query(
+      `INSERT INTO history (image_url, caption, class_categories) VALUES ($1, $2, $3) RETURNING *;`,
+      [image_url, caption, JSON.stringify(class_categories)]
+    );
+    if (data.rows.length === 0) {
+      return new Response(`Error could not insert into history`, {
+        status: 400,
+      });
+    }
+    return NextResponse.json(data.rows);
+  } catch (error: unknown) {
+    return new Response(`Error Message: ${error.message}`, { status: 400 });
+  }
+};
