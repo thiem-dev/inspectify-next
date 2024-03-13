@@ -14,7 +14,30 @@ const pool = new Pool({
   connectionString: process.env.DB_STRING,
 });
 
-export const DELETE = async (req: NextRequest, { params }) => {
+//GET one by Id
+export const GET = async (_: NextRequest, { params }) => {
+  const id = params.id;
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM history
+    WHERE id=$1`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return new Response(`Error could not find item id:${id}`, {
+        status: 400,
+      });
+    }
+    return NextResponse.json(result.rows);
+  } catch (error: unknown) {
+    return new Response(`Error Message: ${error.message}`, { status: 400 });
+  }
+};
+
+//DELETE one by id
+export const DELETE = async (_: NextRequest, { params }) => {
   const id = params.id;
 
   try {
