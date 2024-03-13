@@ -24,7 +24,7 @@ export const DELETE = async (req: NextRequest, { params }) => {
       [id]
     );
     if (result.rows.length === 0) {
-      return new Response(`Error could not insert into history`, {
+      return new Response(`Error could not delete from id:${id}`, {
         status: 400,
       });
     }
