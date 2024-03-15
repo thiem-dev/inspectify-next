@@ -3,10 +3,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { HistoryInsert } from '../../../../typeDefs/types';
 
-type Error = {
-  message: string;
-};
-
 // @ts-ignore
 import pg from 'pg';
 
@@ -30,7 +26,7 @@ export const GET = async () => {
       });
     }
     return NextResponse.json(result.rows);
-  } catch (error: unknown) {
+  } catch (error: any) {
     return new Response(`Error Message: ${error.message}`, { status: 400 });
   }
 };
@@ -50,7 +46,7 @@ export const POST = async (req: NextRequest) => {
       });
     }
     return NextResponse.json(result.rows);
-  } catch (error: unknown) {
+  } catch (error: any) {
     return new Response(`Error Message: ${error.message}`, { status: 400 });
   }
 };

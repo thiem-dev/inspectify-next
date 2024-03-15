@@ -12,4 +12,14 @@ type HistoryInsert = {
   class_categories: string;
 };
 
-export { History, HistoryInsert };
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+type Error = {
+  message: string;
+};
+
+export { History, HistoryInsert, Props, Error };

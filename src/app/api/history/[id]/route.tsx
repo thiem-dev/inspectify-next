@@ -1,10 +1,7 @@
 // https://blog.stackademic.com/a-guide-to-build-an-api-server-with-nextjs-14-and-mongoose-e01f0e10a68a
 
 import { NextRequest, NextResponse } from 'next/server';
-
-type Error = {
-  message: string;
-};
+import { Props, Error } from '../../../../../typeDefs/types';
 
 // @ts-ignore
 import pg from 'pg';
@@ -15,8 +12,8 @@ const pool = new Pool({
 });
 
 //GET one by Id
-export const GET = async (_: NextRequest, { params }) => {
-  const id = params.id;
+export const GET = async (_: NextRequest, { params: { id } }: Props) => {
+  // const id = params.id;
 
   try {
     const result = await pool.query(
@@ -31,14 +28,14 @@ export const GET = async (_: NextRequest, { params }) => {
       });
     }
     return NextResponse.json(result.rows);
-  } catch (error: unknown) {
+  } catch (error: any) {
     return new Response(`Error Message: ${error.message}`, { status: 400 });
   }
 };
 
 //DELETE one by id
-export const DELETE = async (_: NextRequest, { params }) => {
-  const id = params.id;
+export const DELETE = async (_: NextRequest, { params: { id } }: Props) => {
+  // const id = params.id;
 
   try {
     const result = await pool.query(
@@ -52,7 +49,7 @@ export const DELETE = async (_: NextRequest, { params }) => {
       });
     }
     return NextResponse.json(result.rows);
-  } catch (error: unknown) {
+  } catch (error: any) {
     return new Response(`Error Message: ${error.message}`, { status: 400 });
   }
 };
