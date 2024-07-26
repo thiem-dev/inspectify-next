@@ -1,4 +1,4 @@
-# TODO
+This is the backend server for: 
 
-- Link this api routing to inspectify app.
-- setup ai recipe assistant api routes too
+- notice the `image-client`
+https://inspectify-image-client.vercel.app/
